@@ -1,0 +1,44 @@
+byte RELOJ=12,DATO=11,LATCH=9,RELOJ2=2,DATO2=1,LATCH2=0;
+int n=0,m=198,i,j,k,a,b;
+void setup() {
+   for(i=9;i<=12;i++){
+      pinMode(i,OUTPUT);
+   }
+   digitalWrite(RELOJ,LOW);
+   digitalWrite(LATCH,LOW);
+   for(i=0;i<=2;i++){
+      pinMode(i,OUTPUT);
+   }
+   digitalWrite(RELOJ2,LOW);
+   digitalWrite(LATCH2,LOW);
+}
+byte codigo (byte digito){
+   byte valor;
+   if(digito==0)valor=0x3F;
+   if(digito==1)valor=0x06;
+   if(digito==2)valor=0x5B;
+   if(digito==3)valor=0x4F;
+   if(digito==4)valor=0x66;
+   if(digito==5)valor=0x6D;
+   if(digito==6)valor=0x7D;
+   if(digito==7)valor=0x07;
+   if(digito==8)valor=0x7F;
+   if(digito==9)valor=0x67;
+   return(valor);
+}
+void loop() {
+   for(i=0;i<m-n+1;i++){
+   b=n%10;a=(n-b)/10; 
+   j=codigo(a);
+   k=codigo(b); 
+   shiftOut(DATO,RELOJ,MSBFIRST,j);
+   digitalWrite(LATCH,HIGH);
+   digitalWrite(LATCH,LOW);
+   shiftOut(DATO2,RELOJ2,MSBFIRST,k);
+   digitalWrite(LATCH2,HIGH);
+   digitalWrite(LATCH2,LOW);
+   n++;
+   delay(100);
+   }
+   while(1){}
+}
